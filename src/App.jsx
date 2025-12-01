@@ -1,3 +1,8 @@
+import { Quiz } from "./Components/quiz";
+
 export const App = () => {
-  return <div> Taylor Swift Quiz</div>
+  return (
+  <Quiz />
+  );
+  
 }

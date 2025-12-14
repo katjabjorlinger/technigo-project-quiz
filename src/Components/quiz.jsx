@@ -1,102 +1,136 @@
 import { useState } from "react";
 
-export const Quiz = () => {
-  const [answers, setAnswers] = useState({
-    favoriteEra: "",
-    favoriteSong: "",
-    seenLive: ""
-  });
+const questions = [
+  {
+    id: 1,
+    question: "Which album did Taylor Swift release in 2014?",
+    type: "radio",
+    options: ["Red", "1989", "Reputation", "Fearless"],
+    correctAnswer: "1989",
+  },
+  {
+    id: 2,
+    question: "Where was Taylor Swift born?",
+    type: "select",
+    options: [
+      "New York",
+      "Nashville",
+      "Reading, Pennsylvania",
+      "Los Angeles",
+    ],
+    correctAnswer: "Reading, Pennsylvania",
+  },
+  {
+    id: 3,
+    question:
+      "Which song includes the lyric: 'It's me, hi, I'm the problem, it's me'?",
+    type: "radio",
+    options: ["Anti-Hero", "Blank Space", "Style", "Cardigan"],
+    correctAnswer: "Anti-Hero",
+  },
+];
 
+export const Quiz = () => {
+  const [answers, setAnswers] = useState({});
   const [submitted, setSubmitted] = useState(false);
 
-  // Hantera ändringar i input/select
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setAnswers((prev) => ({ ...prev, [name]: value }));
+  const handleChange = (questionId, value) => {
+    setAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
 
-  // Era-alternativ
-  const eras = ["80s", "90s", "2000s"];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
 
-  return (
-    <div className="max-w-md mx-auto p-4">
-      {!submitted ? (
-        <form onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
-          {/* Fråga 1: Favorit era */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2">Vilken era föredrar du?</label>
-            {eras.map((era) => (
-              <label key={era} className="block">
-                <input
-                  type="radio"
-                  name="favoriteEra"
-                  value={era}
-                  checked={answers.favoriteEra === era}
-                  onChange={handleChange}
-                  required
-                  className="mr-2"
-                />
-                {era}
-              </label>
-            ))}
-          </div>
+  const score = questions.reduce((total, q) => {
+    return answers[q.id] === q.correctAnswer ? total + 1 : total;
+  }, 0);
 
-          {/* Fråga 2: Favoritlåt */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2">Välj en favoritlåt</label>
-            <select
-              name="favoriteSong"
-              value={answers.favoriteSong}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-2"
-              required
-            >
-              <option value="">-- Välj låt --</option>
-              <option value="Love Story">Love Story</option>
-              <option value="Cruel Summer">Cruel Summer</option>
-              <option value="Cardigan">Cardigan</option>
-              <option value="All Too Well (10 Minute Version)">All Too Well (10 Minute Version)</option>
-              <option value="Anti-Hero">Anti-Hero</option>
-            </select>
-          </div>
+  /* ================= RESULT VIEW ================= */
+  if (submitted) {
+    return (
+      <div className="quiz-page">
+        <div className="quiz-card quiz-result">
+          <h1>Quiz Result</h1>
 
-          {/* Fråga 3: Sett live */}
-          <div className="mb-4">
-            <label className="font-semibold block mb-2">Har du sett Taylor live?</label>
-            <select
-              name="seenLive"
-              value={answers.seenLive}
-              onChange={handleChange}
-              className="w-full border rounded-lg p-2"
-              required
-            >
-              <option value="">-- Välj --</option>
-              <option value="Ja">Ja</option>
-              <option value="Nej">Nej</option>
-            </select>
-          </div>
+          <p className="quiz-score">
+            {score} / {questions.length}
+          </p>
+
+          <p className="quiz-feedback">
+            {score === questions.length
+              ? "Perfect score! True Swiftie 💖"
+              : "Nice job! Want to try again?"}
+          </p>
 
           <button
-            type="submit"
-            className="w-full bg-pink-600 text-white py-2 rounded-xl hover:bg-pink-700 transition"
+            className="quiz-button"
+            onClick={() => {
+              setAnswers({});
+              setSubmitted(false);
+            }}
           >
-            Skicka in
-          </button>
-        </form>
-      ) : (
-        <div className="text-center space-y-4">
-          <h2 className="text-xl font-bold text-pink-700">Tack för dina svar!</h2>
-          <p><strong>Favoritera:</strong> {answers.favoriteEra}</p>
-          <p><strong>Favoritlåt:</strong> {answers.favoriteSong}</p>
-          <p><strong>Sett live:</strong> {answers.seenLive}</p>
-          <button
-            onClick={() => setSubmitted(false)}
-            className="mt-4 bg-pink-600 text-white py-2 px-4 rounded-xl hover:bg-pink-700 transition"
-          >
-            Gör om quizet
+            Try again
           </button>
         </div>
-      )}
+      </div>
+    );
+  }
+
+  /* ================= QUIZ FORM ================= */
+  return (
+    <div className="quiz-page">
+      <form className="quiz-card" onSubmit={handleSubmit}>
+        <div className="quiz-header">
+          <h1>Taylor Swift Quiz</h1>
+          <p>Test how well you know Taylor Swift</p>
+        </div>
+
+        {questions.map((q) => (
+          <div key={q.id} className="quiz-question">
+            <p>{q.question}</p>
+
+            {q.type === "radio" && (
+              <div>
+                {q.options.map((option) => (
+                  <label key={option} className="quiz-option">
+                    <input
+                      type="radio"
+                      name={`question-${q.id}`}
+                      value={option}
+                      checked={answers[q.id] === option}
+                      onChange={() => handleChange(q.id, option)}
+                      required
+                    />
+                    {option}
+                  </label>
+                ))}
+              </div>
+            )}
+
+            {q.type === "select" && (
+              <select
+                className="quiz-select"
+                value={answers[q.id] || ""}
+                onChange={(e) => handleChange(q.id, e.target.value)}
+                required
+              >
+                <option value="">-- Select answer --</option>
+                {q.options.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+        ))}
+
+        <button type="submit" className="quiz-button">
+          Submit quiz
+        </button>
+      </form>
     </div>
   );
 };

@@ -11,3 +11,131 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* ===== Reset-ish ===== */
+* {
+  box-sizing: border-box;
+}
+
+/* ===== Page background ===== */
+.quiz-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #fde7f3, #ffffff, #fbcfe8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ===== Card ===== */
+.quiz-card {
+  background: #ffffff;
+  width: 100%;
+  max-width: 520px;
+  padding: 1.5rem;
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== Header ===== */
+.quiz-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.quiz-header h1 {
+  color: #be185d;
+  font-size: 1.9rem;
+  font-weight: 800;
+  margin-bottom: 0.25rem;
+}
+
+.quiz-header p {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+
+/* ===== Questions ===== */
+.quiz-question {
+  margin-bottom: 1.5rem;
+}
+
+.quiz-question p {
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1f2937;
+}
+
+/* ===== Radio options ===== */
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.quiz-option:hover {
+  background-color: #fce7f3;
+}
+
+/* ===== Select ===== */
+.quiz-select {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  font-size: 1rem;
+}
+
+/* ===== Button ===== */
+.quiz-button {
+  width: 100%;
+  padding: 0.9rem;
+  border-radius: 14px;
+  border: none;
+  background-color: #db2777;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.1s ease, background-color 0.2s ease;
+}
+
+.quiz-button:hover {
+  background-color: #be185d;
+}
+
+.quiz-button:active {
+  transform: scale(0.97);
+}
+
+/* ===== Result page ===== */
+.quiz-result {
+  text-align: center;
+}
+
+.quiz-score {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #be185d;
+  margin: 1rem 0;
+}
+
+.quiz-feedback {
+  color: #4b5563;
+  margin-bottom: 1.5rem;
+}
+
+/* ===== Responsive ===== */
+@media (min-width: 640px) {
+  .quiz-card {
+    padding: 2rem;
+  }
+
+  .quiz-header h1 {
+    font-size: 2.2rem;
+  }
+}
